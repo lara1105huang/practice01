@@ -1,0 +1,10 @@
+{
+    "login":{
+        "Please_sign_in": "請先登錄",
+        "Email_address":"電子郵件",
+        "Password":"密碼",
+        "Remember_me":"記住密碼",
+        "Sign_in":"登入"
+    } 
+
+ }

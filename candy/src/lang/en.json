@@ -1,0 +1,9 @@
+{
+    "login":{
+        "Please_sign_in": "Please sign in",
+        "Email_address":"Email",
+        "Password":"Password",
+        "Remember_me":"Remember me",
+        "Sign_in":"Sign in"
+    } 
+}
