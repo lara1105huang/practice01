@@ -5,5 +5,16 @@
         "Password":"Password",
         "Remember_me":"Remember me",
         "Sign_in":"Sign in"
-    } 
+    },
+    "navbar":{
+        "Sign_out": "Sign out"
+    },
+    "sidebar":{
+        "Administrator":"Administrator",
+        "Product_List" : "Product List",
+        "Order_List" : "Oreder List",
+        "Coupon":"Coupon",
+       "Analog_function": "Analog function",
+       "Simulated_order":"Simulated order"
+    }
 }

@@ -2,10 +2,17 @@
 <div>
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
         <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Company name</a>
-        <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+        <input class="form-control form-control-dark w-75" type="text" placeholder="Search" aria-label="Search">
+        <div class="lang-dropdown">
+        <span><i class="fas fa-globe lang-icon"></i></span>
+        <ul class="lang-dropdown-content">
+            <li @click="changeLang('en')">en</li>
+            <li @click="changeLang('tw')">tw</li>
+        </ul>
+        </div>
         <ul class="navbar-nav px-3">
             <li class="nav-item text-nowrap">
-            <a @click.prevent="signout" class="nav-link" href="#">Sign out</a>
+            <a @click.prevent="signout" class="nav-link" href="#">{{$t("navbar.Sign_out")}}</a>
             </li>
         </ul>
     </nav>

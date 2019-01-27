@@ -5,6 +5,17 @@
         "Password":"密碼",
         "Remember_me":"記住密碼",
         "Sign_in":"登入"
-    } 
+    },
+    "navbar":{
+        "Sign_out": "登出"
+    },
+    "sidebar":{
+        "Administrator":"管理員",
+        "Product_List" : "產品列表",
+        "Order_List" : "訂單列表",
+        "Coupon":"優惠券",
+       "Analog_function": "模擬功能",
+       "Simulated_order":"模擬訂單"
+    }
 
  }
