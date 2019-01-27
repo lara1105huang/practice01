@@ -16,6 +16,16 @@
         "Coupon":"優惠券",
        "Analog_function": "模擬功能",
        "Simulated_order":"模擬訂單"
-    }
+    },
+    "products":{
+        "Add_product":"新增產品",
+        "sort":"分類",
+        "Product_Name":"產品名稱",
+        "Original_Price":"原價",
+        "Bargain_Price":"特價",
+        "Enable":"啟用",
+        "Edit":"編輯",
+        "Delete":"刪除"
+     }
 
  }

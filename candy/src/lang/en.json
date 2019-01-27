@@ -16,5 +16,15 @@
         "Coupon":"Coupon",
        "Analog_function": "Analog function",
        "Simulated_order":"Simulated order"
+    },
+    "products":{
+       "Add_product":"Add product",
+       "sort":"sort",
+       "Product_Name":"Product Name",
+       "Original_Price":"Original price",
+       "Bargain_Price":"Bargain Price",
+       "Enable":"Enable",
+       "Edit":"Edit",
+       "Delete":"Delete"
     }
 }

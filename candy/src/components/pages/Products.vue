@@ -3,18 +3,18 @@
      <loading :active.sync="isLoading"></loading>
 
     <div class="mt-3">
-        <a @click="openModal(true)" class="btn btn-outline-primary btn-sm text-right">新增產品</a>
+        <a @click="openModal(true)" class="btn btn-outline-primary btn-sm text-right">{{$t("products.Add_product")}}</a>
     </div>
 <div class="table-responsive">
     <table class="table mt-4">
         <thead>
             <tr>
-                <td>分類</td>
-                <td>產品名稱</td>
-                <td>原價</td>
-                <td>特價</td>
-                <td>是否啟用</td>
-                <td>編輯</td>
+                <td>{{$t("products.sort")}}</td>
+                <td>{{$t("products.Product_Name")}}</td>
+                <td>{{$t("products.Original_Price")}}</td>
+                <td>{{$t("products.Bargain_Price")}}</td>
+                <td>{{$t("products.Enable")}}</td>
+                <td>{{$t("products.Edit")}}</td>
             </tr>
         </thead>
         <tbody>
@@ -148,6 +148,8 @@
 </template>
 
 <script>
+import { app } from '../../main'
+import Vue from 'vue'
 import Pagination from '../Pagination';
 export default {
     name:"Products",
