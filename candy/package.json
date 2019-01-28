@@ -2,7 +2,7 @@
   "name": "candy",
   "version": "1.0.0",
   "description": "A Vue.js project",
-  "author": "“larahuang” <“larahuang@gmail.com”>",
+  "author": "“larahuang” <“lara1105huang@gmail.com”>",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
