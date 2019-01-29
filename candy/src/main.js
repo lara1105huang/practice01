@@ -1,6 +1,8 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+import VeeValidate from 'vee-validate';
+import zhTWValidate from 'vee-validate/dist/locale/zh_TW';
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Loading from 'vue-loading-overlay';
@@ -12,14 +14,12 @@ import currencyFilter from './filters/currency';
 import dateFilter from './filters/date';
 import router from './router'
 import VueI18n from 'vue-i18n'
-import VeeValidate from 'vee-validate';
-import zhTWValidate from 'vee-validate/dist/locale/zh_TW';
-VeeValidate.Validator.localize('zh_TW', zhTWValidate);//驗證中文化
-Vue.use(VeeValidate);
 
 Vue.use(VueAxios, axios)
 Vue.config.productionTip = false;
 axios.defaults.withCredentials = true;
+VeeValidate.Validator.localize('zh_TW', zhTWValidate);//驗證中文化
+Vue.use(VeeValidate);
 Vue.component('Loading',Loading)
 Vue.filter('currency', currencyFilter);
 Vue.filter('date', dateFilter);

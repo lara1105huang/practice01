@@ -133,41 +133,47 @@
     <div class="my-5 row justify-content-center">
       <!--
         1.綁定form 表單
+        2.驗證required|email 表示,傳入 errors.first() 顯示錯誤訊息,使用 errors.first() 顯示 第一個 錯誤訊息
       -->
       <form class="col-md-6" @submit.prevent="createOrder">
         <div class="form-group">
-          <label :for="form.user.email">Email</label>
-          <input v-model="form.user.email" type="email" class="form-control" name="email" :id="form.user.email"
-             placeholder="請輸入 Email">
-          <span class="text-danger">
-            請填入email
+          <label for="useremail">Email</label>
+          <input type="email" class="form-control" name="email" id="useremail"
+            v-validate="'required|email'"
+            :class="{'is-invalid': errors.has('email')}"
+            v-model="form.user.email" placeholder="請輸入 Email">
+          <span class="text-danger" v-if="errors.has('email')">
+            {{ errors.first('email') }}
           </span>
         </div>
-          <div class="form-group">
-          <label :for="form.user.name">收件人姓名</label>
-          <input v-model="form.user.name" type="text" class="form-control" name="name" :id="form.user.name"
-             placeholder="輸入姓名">
-          <span class="text-danger">姓名必須輸入</span>
+
+        <div class="form-group">
+          <label for="username">收件人姓名</label>
+          <input type="text" class="form-control" name="name" id="username"
+            :class="{'is-invalid': errors.has('name')}"
+            v-model="form.user.name" v-validate="'required'" placeholder="輸入姓名">
+          <span class="text-danger" v-if="errors.has('name')">姓名必須輸入</span>
         </div>
 
         <div class="form-group">
-          <label :for="form.user.tel">收件人電話</label>
-          <input v-model="form.user.tel" type="tel" class="form-control" :id="form.user.tel"
-            placeholder="請輸入電話">
-             <span class="text-danger">電話號碼必須輸入必須輸入</span>
+          <label for="usertel">收件人電話</label>
+          <input type="tel" class="form-control" id="usertel"
+            v-model="form.user.tel" placeholder="請輸入電話">
         </div>
-         <div class="form-group">
-          <label :for="form.user.address">收件人地址</label>
-          <input v-model="form.user.address" type="address" class="form-control" :name="form.user.address"
-            id="useraddress"
+
+        <div class="form-group">
+          <label for="useraddress">收件人地址</label>
+          <input type="address" class="form-control" name="address"
+            :class="{'is-invalid': errors.has('address')}"
+            id="useraddress" v-model="form.user.address" v-validate="'required'"
             placeholder="請輸入地址">
-          <span class="text-danger">地址欄位不得留空</span>
+          <span class="text-danger" v-if="errors.has('address')">地址欄位不得留空</span>
         </div>
 
         <div class="form-group">
-          <label :for="form.message">留言</label>
-          <textarea v-model="form.message" name="" :id="form.message" class="form-control" cols="30" rows="10"
-            ></textarea>
+          <label for="useraddress">留言</label>
+          <textarea name="" id="" class="form-control" cols="30" rows="5"
+            v-model="form.message"></textarea>
         </div>
         <div class="text-right">
           <button class="btn btn-danger">送出訂單</button>
@@ -276,15 +282,19 @@ export default {
         console.log(response);
       });
     },
-    //訂單表單
     createOrder() {
       const vm = this;
       const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/order`;
       const order = vm.form;
-       vm.isLoading = true;
-       this.$http.post(url, { data:order } ).then((response) => {
-       console.log('訂單已建立',response);
-       vm.isLoading = false;      
+      this.$validator.validate().then((result) => {
+        if (result) {
+          this.$http.post(url, { data: order }).then((response) => {
+            console.log('訂單已建立', response);
+            vm.isLoading = false;
+          });
+        } else {
+          console.log('欄位不完整');
+        }
       });
     },
 
