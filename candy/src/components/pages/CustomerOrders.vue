@@ -129,6 +129,51 @@
         </div>
       </div>
     </div>
+    <!--form-->
+    <div class="my-5 row justify-content-center">
+      <!--
+        1.綁定form 表單
+      -->
+      <form class="col-md-6" @submit.prevent="createOrder">
+        <div class="form-group">
+          <label :for="form.user.email">Email</label>
+          <input v-model="form.user.email" type="email" class="form-control" name="email" :id="form.user.email"
+             placeholder="請輸入 Email">
+          <span class="text-danger">
+            請填入email
+          </span>
+        </div>
+          <div class="form-group">
+          <label :for="form.user.name">收件人姓名</label>
+          <input v-model="form.user.name" type="text" class="form-control" name="name" :id="form.user.name"
+             placeholder="輸入姓名">
+          <span class="text-danger">姓名必須輸入</span>
+        </div>
+
+        <div class="form-group">
+          <label :for="form.user.tel">收件人電話</label>
+          <input v-model="form.user.tel" type="tel" class="form-control" :id="form.user.tel"
+            placeholder="請輸入電話">
+             <span class="text-danger">電話號碼必須輸入必須輸入</span>
+        </div>
+         <div class="form-group">
+          <label :for="form.user.address">收件人地址</label>
+          <input v-model="form.user.address" type="address" class="form-control" :name="form.user.address"
+            id="useraddress"
+            placeholder="請輸入地址">
+          <span class="text-danger">地址欄位不得留空</span>
+        </div>
+
+        <div class="form-group">
+          <label :for="form.message">留言</label>
+          <textarea v-model="form.message" name="" :id="form.message" class="form-control" cols="30" rows="10"
+            ></textarea>
+        </div>
+        <div class="text-right">
+          <button class="btn btn-danger">送出訂單</button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -144,6 +189,15 @@ export default {
       isLoading: false,
       cart: {},
       coupon_code: '',
+      form: {
+        user: {
+          name: '',
+          email: '',
+          tel: '',
+          address: '',
+        },
+        message: '',
+      },
     };
   },
   methods: {
@@ -221,7 +275,18 @@ export default {
         vm.getCart();
         console.log(response);
       });
-    }
+    },
+    //訂單表單
+    createOrder() {
+      const vm = this;
+      const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/order`;
+      const order = vm.form;
+       vm.isLoading = true;
+       this.$http.post(url, { data:order } ).then((response) => {
+       console.log('訂單已建立',response);
+       vm.isLoading = false;      
+      });
+    },
 
   },
   created() {
