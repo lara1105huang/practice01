@@ -98,9 +98,9 @@
               </td>
               <td class="align-middle">
                 {{ item.product.title }}
-                <!-- <div class="text-success" v-if="item.coupon">
+                <div class="text-success" v-if="item.coupon">
                   已套用優惠券
-                </div> -->
+                </div> 
               </td>
               <td class="align-middle">{{ item.qty }}/{{ item.product.unit }}</td>
               <td class="align-middle text-right">{{ item.final_total }}</td>
@@ -111,12 +111,21 @@
               <td colspan="3" class="text-right">總計</td>
               <td class="text-right">{{ cart.total }}</td>
             </tr>
-            <!-- <tr v-if="cart.final_total">
-              <td colspan="3" class="text-right text-success">折扣價</td>
+            <!--假設最後的總價不等於總價才會出現-->
+             <tr v-if="cart.final_total !== cart.total">
+              <td colspan="3"  class="text-right text-success">折扣價</td>
               <td class="text-right text-success">{{ cart.final_total }}</td>
-            </tr> -->
+            </tr> 
           </tfoot>
         </table>
+        <div class="input-group mb-3 input-group-sm">
+          <input v-model="coupon_code" type="text" class="form-control" placeholder="請輸入優惠碼">
+          <div class="input-group-append">
+            <button @click="addCouponCode" class="btn btn-outline-secondary" type="button">
+              套用優惠碼
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -133,6 +142,7 @@ export default {
       },
       isLoading: false,
       cart: {},
+      coupon_code: '',
     };
   },
   methods: {
@@ -195,6 +205,20 @@ export default {
         vm.getCart();
         console.log(response);
         vm.isLoading = false;
+      });
+    },
+    addCouponCode(){
+      const vm = this;
+      const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/coupon`;
+      const coupon ={
+        code:vm.coupon_code,
+      }
+      vm.isLoading = true;
+      //
+      this.$http.post(url, { data:coupon } ).then((response) => {
+       vm.isLoading = false;
+        vm.getCart();
+        console.log(response);
       });
     }
 
