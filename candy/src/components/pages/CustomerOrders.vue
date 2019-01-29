@@ -90,12 +90,7 @@
           </thead>
           <tbody>
             <tr v-for="item in cart.carts" :key="item.id" v-if="cart.carts">
-              <td class="align-middle">
-                  <!--刪除購物車單筆id-->
-                <button @click="removeCartItem(item.id)" type="button" class="btn btn-outline-danger btn-sm">
-                  <i  class="far fa-trash-alt" ></i>
-                </button>
-              </td>
+              
               <td class="align-middle">
                 {{ item.product.title }}
                 <div class="text-success" v-if="item.coupon">
@@ -104,6 +99,12 @@
               </td>
               <td class="align-middle">{{ item.qty }}/{{ item.product.unit }}</td>
               <td class="align-middle text-right">{{ item.final_total }}</td>
+              <td class="align-middle">
+                  <!--刪除購物車單筆id-->
+                <button @click="removeCartItem(item.id)" type="button" class="btn btn-outline-danger btn-sm">
+                  <i  class="far fa-trash-alt" ></i>
+                </button>
+              </td>
             </tr>
           </tbody>
           <tfoot>

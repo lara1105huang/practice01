@@ -235,7 +235,10 @@ export default {
             vm.status.fileUploading = true;
             //將檔案post 出去
             this.$http.post(url, formData, {
-                //將格式調整
+                //將格式調整 解說：？？https://notfalse.net/39/http-message-format
+                //Content-Type 內容類型 這份文件說明了在 HTTP POST 訊息中使用多種格式訊息的作法，它可以用在許多 REST-based API 的系統，它可以混合多種資料格式並一次傳送，當然非文字的資料必須要編碼為二進位字串。
+                //https://dotblogs.com.tw/regionbbs/2010/12/20/implement_http_post_multipart_form_data
+                //Forms: multipart/form-data，這份文件說明了在 HTTP POST 訊息中使用多種格式訊息的作法，它可以用在許多 REST-based API 的系統，它可以混合多種資料格式並一次傳送，當然非文字的資料必須要編碼為二進位字串。
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
