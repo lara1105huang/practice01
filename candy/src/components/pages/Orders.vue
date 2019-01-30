@@ -2,7 +2,7 @@
     <div>
         <Loading :active.sync="isLoading"></Loading>
         <div class="table-responsive">
-            <table>
+            <table class="table mt-4">
                 <thead>
                     <tr>
                         <th>購買時間</th>

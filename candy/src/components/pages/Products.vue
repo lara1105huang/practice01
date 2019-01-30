@@ -29,20 +29,21 @@
                 </td>
                 <td>
                     <button  @click="openModal(false, item)" class="btn btn-outline-primary btn-sm">編輯</button>
+                    <button @click="openDelProductModal(item)" class="btn btn-outline-danger btn-sm">刪除</button>
                 </td>
             </tr>
         </tbody>
     </table>
 </div>
 
-<!---->
+<!--Pagination-->
   <Pagination :pages="pagination" @emitPages="getProducts"></Pagination>
-<!-- Modal -->
+<!--add edit Modal -->
 <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">add product</h5>
+        <h5 class="modal-title" id="exampleModalLabel">新增產品</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -143,7 +144,30 @@
     </div>
   </div>
 </div>
-
+<!--delProductModal-->
+<div class="modal fade" id="delProductModal" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content border-0">
+          <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <span>刪除產品</span>
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            是否刪除 <strong class="text-danger">{{ tempProduct.title }}</strong> 商品(刪除後將無法恢復)。
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-danger"
+              @click="delProduct">確認刪除</button>
+          </div>
+        </div>
+      </div>
+    </div>
 </div>
 </template>
 
@@ -231,11 +255,11 @@ export default {
             //附加 file-to-upload name 欄位 uploadedFile為檔案名稱
             formData.append('file-to-upload', uploadedFile);
             const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/upload`;
-            //欄位加入以後 oading = true
+            //欄位加入以後 loading = true
             vm.status.fileUploading = true;
             //將檔案post 出去
             this.$http.post(url, formData, {
-                //將格式調整 解說：？？https://notfalse.net/39/http-message-format
+                //將格式調整 解說：https://notfalse.net/39/http-message-format
                 //Content-Type 內容類型 這份文件說明了在 HTTP POST 訊息中使用多種格式訊息的作法，它可以用在許多 REST-based API 的系統，它可以混合多種資料格式並一次傳送，當然非文字的資料必須要編碼為二進位字串。
                 //https://dotblogs.com.tw/regionbbs/2010/12/20/implement_http_post_multipart_form_data
                 //Forms: multipart/form-data，這份文件說明了在 HTTP POST 訊息中使用多種格式訊息的作法，它可以用在許多 REST-based API 的系統，它可以混合多種資料格式並一次傳送，當然非文字的資料必須要編碼為二進位字串。
@@ -251,13 +275,34 @@ export default {
                     //把欄位強制寫入
                     vm.$set(vm.tempProduct, 'imageUrl', response.data.imageUrl);
                 }else{
+                    //當上傳的圖檔經過判斷後錯誤方式,經由$bus.$emit傳送到alert 接收＄on出現錯誤訊息提示
                     this.$bus.$emit('messsage:push', response.data.message, 'danger');
                 }
             });
         },
+        //delete
+        openDelProductModal(item) {
+        const vm = this;
+        $('#delProductModal').modal('show');
+        //Object.assign()被用來複製一個或多個物件自身所有可數的屬性到另一個目標物件。回傳的值為該目標物件
+            vm.tempProduct = Object.assign({}, item);
+        },
+        delProduct() {
+        const vm = this;
+        const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/product/${vm.tempProduct.id}`;
+        //this.$http.delete
+        this.$http.delete(url).then((response) => {
+            console.log(response, vm.tempProduct);
+            $('#delProductModal').modal('hide');
+            vm.isLoading = false;
+            this.getProducts();
+        });
+        }
     },
     created(){
         this.getProducts()
+        //$bus 傳送
+        //this.$bus.$emit('messsage:push','這是從products 傳來的訊息','success')
     }
 }
 </script>

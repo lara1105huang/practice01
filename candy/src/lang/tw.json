@@ -4,7 +4,9 @@
         "Email_address":"電子郵件",
         "Password":"密碼",
         "Remember_me":"記住密碼",
-        "Sign_in":"登入"
+        "Sign_in":"登入",
+        "Yes":"是",
+        "No":"否"
     },
     "navbar":{
         "Sign_out": "登出"

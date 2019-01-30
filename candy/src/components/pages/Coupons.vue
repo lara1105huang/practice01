@@ -1,38 +1,41 @@
 <template>
 <div>
-    <div class="text-right">
+    <Loading :active.sync="isLoading"></Loading>
+     <div class="text-right mt-4">
       <button class="btn btn-primary" @click="openCouponModal(true)">
         建立新的優惠券
       </button>
     </div>
     <!--table-->
-    <table>
-        <thead>
-            <tr>
-                <th>名稱</th>
-                <th>折扣百分比</th>
-                <th>到期日</th>
-                <th>是否啟用</th>
-                <th>編輯</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="(item, key) in coupons" :key="key">
-                <td>{{ item.title }}</td>
-                <td>{{ item.percent }}%</td>
-                <td>{{ item.due_date | date }}</td>
-                <td>
-                    <span v-if="item.is_enabled === 1" class="text-success">啟用</span>
-                    <span v-else class="text-muted">未起用</span>
-                </td>
-                <td>
-                    <button class="btn btn-outline-primary btn-sm"
-                    @click="openCouponModal(false, item)"
-                    >編輯</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table mt-4">
+            <thead>
+                <tr>
+                    <th>名稱</th>
+                    <th>折扣百分比</th>
+                    <th>到期日</th>
+                    <th>是否啟用</th>
+                    <th>編輯</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item, key) in coupons" :key="key">
+                    <td>{{ item.title }}</td>
+                    <td>{{ item.percent }}%</td>
+                    <td>{{ item.due_date | date }}</td>
+                    <td>
+                        <span v-if="item.is_enabled === 1" class="text-success">啟用</span>
+                        <span v-else class="text-muted">未起用</span>
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-primary btn-sm"
+                        @click="openCouponModal(false, item)"
+                        >編輯</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <!---->
     <div class="modal fade" id="couponModal" tabindex="-1" role="dialog"
       aria-labelledby="exampleModalLabel" aria-hidden="true">
