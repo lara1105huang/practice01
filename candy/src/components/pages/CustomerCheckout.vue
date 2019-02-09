@@ -1,6 +1,39 @@
 <template>
     <div class="my-5 row justify-content-center">
+         <div class="container main-contant py-5 text-center">
+       <h5 class="mb-2">訂購步驟</h5>
+      <div class="form-row align-items-center text-center">    
+        <div class="col"> 
+         <router-link to="/first_orders">
+          <div class="mb-0 text-primary">
+            <div class="progress-icon">1</div>
+            <div>訂單內容</div>
+          </div>
+          </router-link>
+        </div>
+        <div class="col">
+            <router-link to="/two_orders">
+          <div class="mb-0 text-primary" role="alert">
+            <div class="progress-icon">2</div>
+            <div>填寫結帳資訊</div>
+          </div>
+            </router-link>
+        </div>
+        <div class="col">
+          <div class="mb-0 text-primary" role="alert">
+            <div class="progress-icon">3</div>
+            <div>完成</div>
+          </div>
+        </div>
+        
+      </div>
+      <div class="row progress-suscessline"></div>
+      
+    </div>
         <form class="col-md-6" @submit.prevent="payOrder">
+            <h5 class="py-3 mt-5 mb-2 text-center bg-light">
+                確認訂購資料
+            </h5>
         <table class="table">
             <thead>
             <th>品名</th>
@@ -50,6 +83,7 @@
             </tbody>
         </table>
         <div class="text-right" v-if="order.is_paid === false">
+             <router-link to="/" class="btn btn-secondary">繼續選購</router-link>
             <button class="btn btn-danger">確認付款去</button>
         </div>
         </form>

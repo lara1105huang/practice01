@@ -1,218 +1,140 @@
 <template>
-  <div>
-    <loading :active.sync="isLoading"></loading>
-    <div class="row mt-4">
-      <div class="col-md-4 mb-4" v-for="item in products" :key="item.id">
-        <div class="card border-0 shadow-sm">
-          <div style="height: 150px; background-size: cover; background-position: center"
-            :style="{backgroundImage: `url(${item.imageUrl})`}">
-          </div>
-          <div class="card-body">
-            <span class="badge badge-primary text-white float-right ml-2">{{ item.category }}</span>
-            <h5 class="card-title">
-              <a href="#" class="text-primary">{{ item.title }}</a>
-            </h5>
-            <p class="card-text">{{ item.content }}</p>
-            <div class="d-flex justify-content-between align-items-baseline">
-              <div class="h5" v-if="!item.price">{{ item.origin_price }} 元</div>
-              <del class="h6" v-if="item.price">原價 {{ item.origin_price }} 元</del>
-              <div class="h5" v-if="item.price">現在只要 {{ item.price }} 元</div>
-            </div>
-          </div>
-          <div class="card-footer d-flex">
-            <button type="button" class="btn btn-outline-secondary btn-sm"
-              @click="getProduct(item.id)">
-              <i class="fas fa-spinner fa-spin" v-if="status.loadingItem === item.id"></i>
-              查看更多
-            </button>
-            <!---->
-            <button type="button" class="btn btn-outline-primary btn-sm ml-auto"
-              @click="addtoCart(item.id)">
-              <i class="fas fa-spinner fa-spin" v-if="status.loadingItem === item.id"></i>
-              加到購物車
-            </button>
+<div class="container-flouid">
+   <loading :active.sync="isLoading"></loading>
+  <Jumb/>
+  <div class="container">
+    <!--搜尋-->
+        <div class="row col-sm-12 input-group mb-3">
+          <input type="text" v-model="search" class="form-control" placeholder="搜尋商品標題">
+          <div class="input-group-append h2 text-primary ml-1 mt-1 hvr-grow">
+            <i class="fas fa-search"></i>
           </div>
         </div>
-      </div>
-    </div>
-    <!--productModal-->
-    <div class="modal fade" id="productModal" tabindex="-1" role="dialog"
-      aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">{{ product.title }}</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <!--imageUrl-->
-            <img :src="product.imageUrl" class="img-fluid" alt="">
-            <blockquote class="blockquote mt-3">
-              <p class="mb-0">{{ product.content }}</p>
-              <footer class="blockquote-footer text-right">{{ product.description }}</footer>
-            </blockquote>
-            <div class="d-flex justify-content-between align-items-baseline">
-              <div class="h4" v-if="!product.price">{{ product.origin_price }} 元</div>
-              <del class="h6" v-if="product.price">原價 {{ product.origin_price }} 元</del>
-              <div class="h4" v-if="product.price">現在只要 {{ product.price }} 元</div>
-            </div>
-            <select name="" class="form-control mt-3" v-model="product.num">
-              <!--num-->
-              <option :value="num" v-for="num in 10" :key="num">
-                選購 {{num}} {{product.unit}}
-              </option>
-            </select>
-          </div>
-          <div class="modal-footer">
-            <div class="text-muted text-nowrap mr-3">
-              小計 <strong>{{ product.num * product.price }}</strong> 元
-            </div>
-            <button type="button" class="btn btn-primary"
-              @click="addtoCart(product.id, product.num)">
-              <i class="fas fa-spinner fa-spin" v-if="product.id === status.loadingItem"></i>
-              加到購物車
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--table-->
-     <div class="my-5 row justify-content-center">
-      <div class="my-5 row justify-content-center">
-        <table class="table">
-          <thead>
-            <th></th>
-            <th>品名</th>
-            <th>數量</th>
-            <th>單價</th>
-          </thead>
-          <tbody>
-            <tr v-for="item in cart.carts" :key="item.id" v-if="cart.carts">
-              
-              <td class="align-middle">
-                {{ item.product.title }}
-                <div class="text-success" v-if="item.coupon">
-                  已套用優惠券
-                </div> 
-              </td>
-              <td class="align-middle">{{ item.qty }}/{{ item.product.unit }}</td>
-              <td class="align-middle text-right">{{ item.final_total }}</td>
-              <td class="align-middle">
-                  <!--刪除購物車單筆id-->
-                <button @click="removeCartItem(item.id)" type="button" class="btn btn-outline-danger btn-sm">
-                  <i  class="far fa-trash-alt" ></i>
+       
+    <!--單一產品-->
+        <div class="row mt-2">
+          <div class="col-md-4 mb-4" v-for="item in  filter_products" :key="item.id">
+            <div class="card border-0 shadow-sm">
+              <div class="cart-img"
+                :style="{backgroundImage: `url(${item.imageUrl})`}">
+                <div class="overlay">
+                  <a href="#" @click="getProduct(item.id)" class="icon" title="甜點">
+                  <i class="fas fa-search-plus"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="card-body">
+                <span class="badge badge-primary text-white float-right ml-2">{{ item.category }}</span>
+                <h5 class="card-title">
+                  <a href="#" class="text-primary">{{ item.title }}</a>
+                </h5>
+                <p class="card-text">{{ item.content }}</p>
+                <div class="d-flex justify-content-between align-items-baseline">
+                  <div class="h5" v-if="!item.price">{{ item.origin_price }} 元</div>
+                  <del class="h6" v-if="item.price">原價 {{ item.origin_price }} 元</del>
+                  <div class="h5" v-if="item.price">現在只要 {{ item.price }} 元</div>
+                </div>
+              </div>
+              <div class="card-footer d-flex">
+                <button type="button" class="btn btn-outline-secondary btn-sm"
+                  @click="getProduct(item.id)">
+                  <i class="fas fa-search-plus"></i>
+                  <i class="fas fa-spinner fa-spin" v-if="status.loadingItem === item.id"></i>
+                  查看更多
                 </button>
-              </td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colspan="3" class="text-right">總計</td>
-              <td class="text-right">{{ cart.total }}</td>
-            </tr>
-            <!--假設最後的總價不等於總價才會出現-->
-             <tr v-if="cart.final_total !== cart.total">
-              <td colspan="3"  class="text-right text-success">折扣價</td>
-              <td class="text-right text-success">{{ cart.final_total }}</td>
-            </tr> 
-          </tfoot>
-        </table>
-        <div class="input-group mb-3 input-group-sm">
-          <input v-model="coupon_code" type="text" class="form-control" placeholder="請輸入優惠碼">
-          <div class="input-group-append">
-            <button @click="addCouponCode" class="btn btn-outline-secondary" type="button">
-              套用優惠碼
-            </button>
+                <!--加到購物車 addtoCart-->
+                <button type="button" class="btn btn-outline-primary btn-sm ml-auto"
+                  @click="addtoCart(item.id)">
+                  <i class="fas fa-shopping-cart"></i>
+                  <i class="fas fa-spinner fa-spin" v-if="status.loadingItem === item.id"></i>
+                  加到購物車
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+    <!--Pagination-->
+        <Pagination :pages="pagination" @emitPages="getProducts"></Pagination>
+      
+    </div> 
+    <!--productModal-->
+     <div class="modal fade" id="productModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">{{ product.title }}</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <!--imageUrl-->
+              <img :src="product.imageUrl" class="img-fluid" alt="">
+              <blockquote class="blockquote mt-3">
+                <p class="mb-0">{{ product.content }}</p>
+                <footer class="blockquote-footer text-right">{{ product.description }}</footer>
+              </blockquote>
+              <div class="d-flex justify-content-between align-items-baseline">
+                <div class="h4" v-if="!product.price">{{ product.origin_price }} 元</div>
+                <del class="h6" v-if="product.price">原價 {{ product.origin_price }} 元</del>
+                <div class="h4" v-if="product.price">現在只要 {{ product.price }} 元</div>
+              </div>
+              <select name="" class="form-control mt-3" v-model="product.num">
+                <!--***num-->
+                <option :value="num" v-for="num in 10" :key="num">
+                  選購 {{num}} {{product.unit}}
+                </option>
+              </select>
+            </div>
+            <div class="modal-footer">
+              <div class="text-muted text-nowrap mr-3">
+                小計 <strong>{{ product.num * product.price }}</strong> 元
+              </div>
+              <button type="button" class="btn btn-primary"
+                @click="addtoCart(product.id, product.num)">
+                <i class="fas fa-spinner fa-spin" v-if="product.id === status.loadingItem"></i>
+                加到購物車
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <!--form-->
-    <div class="my-5 row justify-content-center">
-      <!--
-        1.綁定form 表單
-        2.驗證required|email 表示,傳入 errors.first() 顯示錯誤訊息,使用 errors.first() 顯示 第一個 錯誤訊息
-      -->
-      <form class="col-md-6" @submit.prevent="createOrder">
-        <div class="form-group">
-          <label for="useremail">Email</label>
-          <input type="email" class="form-control" name="email" id="useremail"
-            v-validate="'required|email'"
-            :class="{'is-invalid': errors.has('email')}"
-            v-model="form.user.email" placeholder="請輸入 Email">
-          <span class="text-danger" v-if="errors.has('email')">
-            {{ errors.first('email') }}
-          </span>
-        </div>
-
-        <div class="form-group">
-          <label for="username">收件人姓名</label>
-          <input type="text" class="form-control" name="name" id="username"
-            :class="{'is-invalid': errors.has('name')}"
-            v-model="form.user.name" v-validate="'required'" placeholder="輸入姓名">
-          <span class="text-danger" v-if="errors.has('name')">姓名必須輸入</span>
-        </div>
-
-        <div class="form-group">
-          <label for="usertel">收件人電話</label>
-          <input type="tel" class="form-control" id="usertel"
-            v-model="form.user.tel" placeholder="請輸入電話">
-        </div>
-
-        <div class="form-group">
-          <label for="useraddress">收件人地址</label>
-          <input type="address" class="form-control" name="address"
-            :class="{'is-invalid': errors.has('address')}"
-            id="useraddress" v-model="form.user.address" v-validate="'required'"
-            placeholder="請輸入地址">
-          <span class="text-danger" v-if="errors.has('address')">地址欄位不得留空</span>
-        </div>
-
-        <div class="form-group">
-          <label for="useraddress">留言</label>
-          <textarea name="" id="" class="form-control" cols="30" rows="5"
-            v-model="form.message"></textarea>
-        </div>
-        <div class="text-right">
-          <button class="btn btn-danger">送出訂單</button>
-        </div>
-      </form>
-    </div>
   </div>
+</div>
 </template>
 
 <script>
+import Pagination from '../Pagination';
+import Jumb from '../Jumbotron'
 export default {
   data() {
     return {
-      products: [],
+      products: [
+      ],
       product: {},
+      pagination: {},
       status: {
         loadingItem: '',
       },
       isLoading: false,
       cart: {},
       coupon_code: '',
-      form: {
-        user: {
-          name: '',
-          email: '',
-          tel: '',
-          address: '',
-        },
-        message: '',
-      },
+      search: '',
+      visibility:'all'
     };
   },
+  components: {
+    Pagination,Jumb
+  },
   methods: {
-    getProducts() {
+    getProducts(page = 1) {
       const vm = this;
-      const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/products`;
+      const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/products?page=${page}`;
       vm.isLoading = true;
       this.$http.get(url).then((response) => {
         vm.products = response.data.products;
+        vm.pagination = response.data.pagination;
         console.log(response);
         vm.isLoading = false;
       });
@@ -230,6 +152,7 @@ export default {
         vm.status.loadingItem = '';
       });
     },
+    //新增購物車
     addtoCart(id, qty = 1) {
       const vm = this;
       const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`;
@@ -238,11 +161,12 @@ export default {
         product_id: id,
         qty,
       };
+      vm.isLoading = true;
       this.$http.post(url, { data: cart }).then((response) => {
-        console.log(response);
-        vm.status.loadingItem = '';
-        vm.getCart();
-        $('#productModal').modal('hide');
+        vm.isLoading = false;
+        if(response.data.success){
+            this.$bus.$emit('getTotal')
+        }
       });
     },
     getCart() {
@@ -263,11 +187,11 @@ export default {
       //delete
       this.$http.delete(url).then(() => {
         //獲取購物車內容
-        vm.getCart();
-        console.log(response);
         vm.isLoading = false;
+        this.$bus.$emit('getTotal')
+        vm.getCart();       
       });
-    },
+    }, 
     addCouponCode(){
       const vm = this;
       const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/coupon`;
@@ -282,26 +206,18 @@ export default {
         console.log(response);
       });
     },
-    createOrder() {
+  },
+  computed: {
+    filter_products() {
       const vm = this;
-      const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/order`;
-      const order = vm.form;
-      // vm.isLoading = true;
-      this.$validator.validate().then((result) => {
-        if (result) {
-          this.$http.post(url, { data: order }).then((response) => {
-            console.log('訂單已建立', response);
-            if (response.data.success) {
-              vm.$router.push(`/customer_checkout/${ response.data.orderId }`);
-            }
-            // vm.getCart();
-            vm.isLoading = false;
-          });
-        } else {
-          console.log('欄位不完整');
-        }
-      });
+            //返回 products 過濾函數
+      return vm.products.filter(function (item){
+                //toLowerCase()方法不會更改原始字符串。
+                //註釋： indexOf()方法對大小寫敏感！如果要檢索的字符串值沒有出現，則該方法返回-1。
+      return item.title.toLowerCase().indexOf(vm.search.toLowerCase())!== -1
+      })
     },
+
   },
   created() {
     this.getProducts();

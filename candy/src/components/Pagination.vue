@@ -1,5 +1,5 @@
 <template>
-    <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example" class="margin: auto;">
     <ul class="pagination justify-content-center">
       <li class="page-item" :class="{'disabled': !pages.has_pre}">
         <a class="page-link" href="#" aria-label="Previous"
@@ -27,11 +27,10 @@
 // :pages="{ 頁碼資訊 }"
 // @emitPages="更新頁面事件"
 export default {
-  name: 'Layout',
-  props: ['pages'],
+  name: 'Pagination',
+  props: ['pages'],//
   data() {
     return {
-      msg: 'Welcome to Your Vue.js App',
       uid: '',
     };
   },

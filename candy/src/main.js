@@ -9,7 +9,8 @@ import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 import App from './App'
 import 'bootstrap'
-import './bus';
+import './bus'
+import 'hover.css'
 import currencyFilter from './filters/currency';
 import dateFilter from './filters/date';
 import router from './router'

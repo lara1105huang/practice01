@@ -9,6 +9,7 @@
         </button>
         </div>
     </div>
+
 </template>
 
 <script>
@@ -22,7 +23,7 @@ export default {
     methods: {
         //傳送訊息到使用者體驗時,會再將傳送的訊息移除
         updateMessage(message, status) {
-            const timestamp = Math.floor(new Date() / 1000);
+            const timestamp = Math.floor(new Date() / 1000);//
             this.messages.push({
                 message,
                 status,
@@ -45,7 +46,7 @@ export default {
                         vm.messages.splice(i, 1);
                     }
                 });
-            },5000);
+            },5000);//
         }
     },
     created() {
@@ -63,12 +64,15 @@ export default {
 </script>
 
 <style scope>
+
 .message-alert {
-  position: fixed;
-  max-width: 50%;
-  top: 56px;
-  right: 20px;
-  z-index: 1100;
+    position: absolute;
+    max-width: 50%;
+    top: 56px;
+    z-index: 1100;
+    text-align: center;
+    width: 100%;
+    left: 25%;
 }
 </style>
 

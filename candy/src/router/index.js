@@ -7,7 +7,9 @@ import Coupons from '@/components/pages/Coupons';
 import Orders from '@/components/pages/Orders';
 import CustomerOrder from '@/components/pages/CustomerOrders';
 import CustomerCheckout from '@/components/pages/CustomerCheckout';
-
+import ShopPage from '@/components/pages/ShopPage'
+import FirstOrders from '@/components/pages/FirstOrders';
+import TwoOrders from '@/components/pages/TwoOrders';
 Vue.use(Router)
 
 export default new Router({
@@ -49,13 +51,23 @@ export default new Router({
     },
     {
       path: '/',
-      name: 'Dashboard',
-      component: Dashboard,
+      name: 'ShopPage',
+      component: ShopPage,
       children: [
         {
-          path: 'customer_order',
+          path: '/',
           name: 'CustomerOrder',
           component: CustomerOrder,
+        },
+        {
+          path: 'first_orders',
+          name: 'FirstOrders',
+          component: FirstOrders,
+        },
+        {
+          path: 'two_orders',
+          name: 'TwoOrders',
+          component: TwoOrders,
         },
         {
           path: 'customer_checkout/:orderId',

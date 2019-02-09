@@ -14,7 +14,7 @@
 import { app } from '../main'
 import Vue from 'vue'
 export default {
-  name: 'HelloWorld',
+  name: 'Header',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
