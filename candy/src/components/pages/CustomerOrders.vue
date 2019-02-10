@@ -30,9 +30,9 @@
                 </h5>
                 <p class="card-text">{{ item.content }}</p>
                 <div class="d-flex justify-content-between align-items-baseline">
-                  <div class="h5" v-if="!item.price">{{ item.origin_price }} 元</div>
-                  <del class="h6" v-if="item.price">原價 {{ item.origin_price }} 元</del>
-                  <div class="h5" v-if="item.price">現在只要 {{ item.price }} 元</div>
+                  <div class="h5" v-if="!item.price">{{ item.origin_price  | currency }} 元</div>
+                  <del class="h6" v-if="item.price">原價 {{ item.origin_price  | currency }} 元</del>
+                  <div class="h6 text-danger" v-if="item.price">特價 {{ item.price  | currency }} 元</div>
                 </div>
               </div>
               <div class="card-footer d-flex">
@@ -40,14 +40,14 @@
                   @click="getProduct(item.id)">
                   <i class="fas fa-search-plus"></i>
                   <i class="fas fa-spinner fa-spin" v-if="status.loadingItem === item.id"></i>
-                  查看更多
+                  <span class="look-text">查看更多</span>
                 </button>
                 <!--加到購物車 addtoCart-->
                 <button type="button" class="btn btn-outline-primary btn-sm ml-auto"
                   @click="addtoCart(item.id)">
                   <i class="fas fa-shopping-cart"></i>
-                  <i class="fas fa-spinner fa-spin" v-if="status.loadingItem === item.id"></i>
-                  加到購物車
+                 <span class="shop-text"> <i class="fas fa-spinner fa-spin" v-if="status.loadingItem === item.id"></i>
+                  加到購物車</span>
                 </button>
               </div>
             </div>
@@ -76,9 +76,9 @@
                 <footer class="blockquote-footer text-right">{{ product.description }}</footer>
               </blockquote>
               <div class="d-flex justify-content-between align-items-baseline">
-                <div class="h4" v-if="!product.price">{{ product.origin_price }} 元</div>
-                <del class="h6" v-if="product.price">原價 {{ product.origin_price }} 元</del>
-                <div class="h4" v-if="product.price">現在只要 {{ product.price }} 元</div>
+                <div class="h4" v-if="!product.price">{{ product.origin_price  | currency }} 元</div>
+                <del class="h6" v-if="product.price">原價 {{ product.origin_price  | currency }} 元</del>
+                <div class="h4" v-if="product.price">現在只要 {{ product.price  | currency }} 元</div>
               </div>
               <select name="" class="form-control mt-3" v-model="product.num">
                 <!--***num-->
@@ -89,7 +89,7 @@
             </div>
             <div class="modal-footer">
               <div class="text-muted text-nowrap mr-3">
-                小計 <strong>{{ product.num * product.price }}</strong> 元
+                小計 <strong>{{ product.num * product.price  | currency }}</strong> 元
               </div>
               <button type="button" class="btn btn-primary"
                 @click="addtoCart(product.id, product.num)">
@@ -225,3 +225,30 @@ export default {
   },
 };
 </script>
+<style scoped>
+.look-text{
+  display: inline-block
+}
+.shop-text{
+  display: inline-block
+}
+
+@media (max-width:1000px){
+  .look-text{
+  display: none;
+  }
+  .shop-text{
+    display: none;
+  }
+  .card-footer .btn .fa-search-plus,.card-footer .btn .fa-shopping-cart{
+    font-size: 24px;
+  }
+  .btn-outline-secondary,.btn-outline-primary  {
+    border-color: transparent;
+  }
+  .card-footer {
+    border-top: 1px dashed #ddd;
+}
+}
+</style>
+

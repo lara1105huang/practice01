@@ -94,7 +94,7 @@ export default {
 <style>
 .jumbotron-bg {
   /* banners.png */
-  background: url('../assets/img/a.png');
+  background: url('https://previews.dropbox.com/p/thumb/AAUBXfCNlKn-Uu73Uf2fZp-0bT8QEe0TAdznCyoGG1Dr6xK9aQC4eM74YSxif3bQff0o5E3yezhxvcTKvHuQ8cOmohpuAScXJWbFPE2edV16uLDmRicH_-5YteBgSFcioYwtD0MadVHGXDOFoy-R1bWhrexpEKg3WZgLFYwfkwn3gXsfWo45yVSUUTz0yln1hhqwKW5fYSYsnwnMHW6EH2R1JuINgPmgYBXmvJ_mokN4JQ/p.png');
   background-size: cover;
   background-position: center center;
   min-height: 400px;

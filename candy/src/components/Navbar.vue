@@ -2,7 +2,7 @@
 <div class="fixed-top" style="background:#333">
     <ul class="navbar-nav text-right mr-3">
         <li class="nav-item text-nowrap mt-3">
-            <a @click.prevent="signout" class="h2 hvr-grow"  title="Sign out" name="Sign out" href="#">
+            <a @click.prevent="signout" class="h2 text-primary hvr-grow"  title="Sign out" name="Sign out" href="#">
                 <i class="fas fa-sign-out-alt text-nowrap"></i>
             </a>
         </li>

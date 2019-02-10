@@ -1,30 +1,50 @@
 <template>
 <div>
      <loading :active.sync="isLoading"></loading>
-    <div class="mt-5">      
+
+    <div class="admin-product">      
     </div>
     <!--搜尋-->
         <div class="input-group mb-3">
-          <input type="text" v-model="search" class="form-control" placeholder="搜尋商品標題">
+          <input type="text" v-model="search" class="form-control" 
+          placeholder="搜尋商品名稱">
           <div class="input-group-append h2 text-primary ml-1 mt-1 hvr-grow">
             <i class="fas fa-search"></i>
           </div>
         </div>
+        <Dropdowns/>
     <!--table-->
     <div class="table-responsive">
         <table class="table">
             <thead>
                 <tr>
-                    <td>分類</td>
-                    <td>名稱
+                    <td width="15%" class="sort">分類
+                        <a class="hvr-icon-spin h5 mt-2 text-white">
+                            <i class="fa fa-chevron-down hvr-icon"></i>
+                        </a>
+                    </td>
+                    <td width="20%">名稱
                         <a @click="reverseArray" class="hvr-icon-spin h5 mt-2 text-primary">
                             <i class="fa fa-chevron-down hvr-icon"></i>
                         </a>
                     </td>
-                    <td>原價</td>
-                    <td>特價</td>
-                    <td>啟用</td>
-                    <td>
+                    <td width="15%">
+                         <a class="hvr-icon-spin h5 mt-2 text-white">
+                            <i class="fa fa-chevron-down hvr-icon"></i>
+                        </a>原價
+                    </td>
+                    <td width="15%">
+                         <a class="hvr-icon-spin h5 mt-2 text-white">
+                            <i class="fa fa-chevron-down hvr-icon"></i>
+                        </a>特價
+                    </td>
+                    <td width="18%">
+                         <a class="hvr-icon-spin h5 mt-2 text-white">
+                            <i class="fa fa-chevron-down hvr-icon"></i>
+                        </a>
+                        啟用
+                    </td>
+                    <td width="23%">
                         <a @click="openModal(true)" title="新產產品" mame="新增產品" class="h2 text-primary ml-3 hvr-grow">
                             <i class="fas fa-plus-circle"></i>
                         </a>
@@ -33,7 +53,7 @@
             </thead>
             <tbody>
                 <tr v-for="(item) in filter_products" :key="item.id">
-                    <td>{{item.category}}</td>
+                    <td class="sort">{{item.category}}</td>
                     <td>{{item.title}}</td>
                     <td>{{item.origin_price  | currency }}</td>
                     <td>{{item.price  | currency}}</td>
@@ -256,6 +276,7 @@
 import { app } from '../../main'
 import Vue from 'vue'
 import Pagination from '../Pagination';
+import Dropdowns from '../Dropdowns';
 let regtitle =/^[\u4e00-\u9fa5\dA-Za-z]{2,32}$/; //最長不得超過15個漢字，或32個字節(數字，字母)正則表達式
 let regcategory =/^[\u4e00-\u9fa5\dA-Za-z]{2,32}$/;
 let regunit =/^[\u4e00-\u9fa5A-Za-z]{1,32}$/; //單位 只能是中文英文,不能數字
@@ -266,7 +287,7 @@ let regContent =/^[\u4e00-\u9fa5\dA-Za-z]{2,32}$/
 export default {
     name:"Products",
     components: {
-        Pagination,
+        Pagination,Dropdowns
     },
     data(){
         return{
@@ -300,6 +321,7 @@ export default {
             isDescriptTransform:false,
             isContentTransform:false,  
             search: '',
+            news:[]
         }
     },
     methods:{
@@ -555,17 +577,7 @@ export default {
                 vm.isLoading = false;
                 this.getProducts();
             });
-        },
-        filterProduct(){
-            const vm = this;
-            vm.filterProducts = vm.Products.fliter(function(item){
-                console.log(vm.filterText, item.title, item.title.match(vm.filterText) )
-                //vm.filterText input 輸入的文字
-                return item.title.match(vm.filterText);
-            })
-        },
-      
-       
+        },   
     },
     created(){
         this.getProducts()
@@ -573,14 +585,14 @@ export default {
        // this.$bus.$emit('messsage:push','這是從products 傳來的訊息','success')
     },
     computed: {
-       filter_products() {
-            const vm = this;
+        filter_products() {
+        const vm = this;
             //返回 postList 過濾函數
-            return this.products.filter(function (item){
+           return vm.products.filter(function (item){
                 //toLowerCase()方法不會更改原始字符串。
                 //註釋： indexOf()方法對大小寫敏感！如果要檢索的字符串值沒有出現，則該方法返回-1。
-                return item.title.toLowerCase().indexOf(vm.search.toLowerCase())!== -1
-            })
+               return item.title.toLowerCase().indexOf(vm.search.toLowerCase())!== -1
+           })
         },
         submitDisable() { 
         let vm = this;
@@ -610,6 +622,56 @@ export default {
 /*上傳標籤修改*/
 #customFile{
     display: none;
+}
+.table {
+    width: 100%;
+}
+.admin-product{
+    margin-top: 50px;
+}
+.input-group {
+    width: 90%;
+}
+@media (max-width: 767px){
+    .admin-product {
+        display: inline-block;
+        margin-top: 0px;
+    }
+    .input-group {
+        width: 98%;
+    }
+    .input-group > .form-control, 
+    .input-group > .form-control-plaintext, 
+    .input-group > .custom-select, 
+    .input-group > .custom-file {  
+        display: inline-block;
+    width: 94%;
+    }
+}
+@media(max-width:640px){
+    .input-group > .form-control, 
+    .input-group > .form-control-plaintext, 
+    .input-group > .custom-select, 
+    .input-group > .custom-file {
+        display: inline-block;
+        width: 93%;
+    }
+    .input-group{
+        width: 98%;
+        margin-top: -50px;
+    }
+}
+@media(max-width:560px){
+    .input-group > .form-control, 
+    .input-group > .form-control-plaintext, 
+    .input-group > .custom-select, 
+    .input-group > .custom-file {
+        display: inline-block;
+        width: 88%;
+    }
+}
+@media(max-width:480px){
+.sort{display: none}
 }
 </style>
 

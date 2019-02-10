@@ -1,14 +1,8 @@
 <template>
 <div>
-    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-      <div class="sidebar-sticky">
-      <h6 class="sidebar-heading d-flex justify-content-between
-        align-items-center px-3 mt-4 mb-1 text-muted">
-        <span>帳號</span>
-        <a class="d-flex align-items-center text-muted" href="#">
-          <span data-feather="plus-circle"></span>
-        </a>
-      </h6>
+<div class="col-sm-2 col-md-2 col-lg-2 d-none d-md-block">
+    <nav class="sidebar bg-light web">
+      <div class="sidebar-sticky mt-5">
         <ul class="nav flex-column">
           <li class="nav-item">
             <router-link to="/admin/products" class="nav-link">
@@ -29,6 +23,7 @@
       </div>
     </nav>
 </div>
+</div>
 </template>
 <script>
 import { app } from '../main'
@@ -42,4 +37,31 @@ export default {
   }
 }
 </script>
+<style scoped>
+
+.dropdown-product {
+  position: relative;
+  display: inline-block;
+  border-radius: 8px;
+  width:767px;
+  font-size: 21px;
+  background: #FA7268 ;
+  padding: 30px auto;
+  margin: 30px auto;
+  line-height: 50px;
+}
+.dropdown-content-product {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 100%;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px auto;;
+  z-index: 1;
+}
+.dropdown-product:hover .dropdown-content-product {
+  display: block;
+}
+</style>
+
 
